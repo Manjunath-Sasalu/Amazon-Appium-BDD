@@ -1,4 +1,4 @@
-package utils;
+package com.amazon.util;
 
 import org.openqa.selenium.WebElement;
 
@@ -18,6 +18,7 @@ public class Utils {
 		txtElement.clear();
 		txtElement.sendKeys(value);
 	}
+	
 	
 	public static void clickOnElement(AppiumDriver<WebElement> driver, String element) {
 		WebElement clkElement = returnWebElemt(driver, element);

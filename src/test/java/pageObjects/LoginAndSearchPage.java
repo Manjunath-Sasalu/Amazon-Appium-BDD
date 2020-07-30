@@ -10,21 +10,21 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
-import com.AmazonUtil.Utils;
+//import com.amazon.util;
 
-import utils.Utils.*;
+
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
 
-public class LoginPage {
+public class LoginAndSearchPage {
 	//Login Elements
 	
 	public AppiumDriver<WebElement> driver;
-	
+	String selectItem;
 
-	public LoginPage(AppiumDriver<WebElement> driver) {
+	public LoginAndSearchPage(AppiumDriver<WebElement> driver) {
 		this.driver = driver;
 		PageFactory.initElements(new AppiumFieldDecorator(driver), this);
 	}
@@ -97,15 +97,50 @@ public class LoginPage {
 	}
 	
 	public void searchItemFromAmazon(String searchItem) throws InterruptedException {
-		driver.findElement(txtSearchBox).clear();
-		driver.findElement(txtSearchBox).sendKeys(searchItem);
-		//driver.findElement(txtSearchBox).sendKeys(Keys.ENTER);
+		driver.findElement(txtSearchBox).click();
 		Thread.sleep(1000);
+		driver.findElement(txtSearchBox).sendKeys(searchItem);
+		driver.findElement(txtSearchBox).sendKeys(Keys.ENTER);
+		Thread.sleep(1000);
+		driver.findElement(txtSearchBox).sendKeys(searchItem);
+		Thread.sleep(3000);
 		
-		List<WebElement> items = driver.findElements(lstSearchItems);
-		System.out.println("Search Result: "+items.size());
 		
 		
-	
+		selectItem = "//android.widget.TextView[contains(@text,'"+searchItem+"')]";
+		driver.findElement(By.xpath(selectItem)).click();
+		Thread.sleep(5000);
+		
+		
+//		List<WebElement> items = driver.findElements(lstSearchItems);
+//		System.out.println("Search Result: "+items.size());
+			
 	}
+	
+	public void randomlySelectSearchItem() throws InterruptedException {
+		driver.findElement(txtSearchBox).click();
+		Thread.sleep(1000);
+		driver.findElement(By.xpath(selectItem)).click();
+		Thread.sleep(5000);
+	}
+	
+	public void selectItemFromSearch(String searchIndex) throws InterruptedException {
+		//String SelectItemFromIndex = "(//android.widget.ImageView[contains(@resource-id,'rs_results_image')]))["+searchIndex+"]";
+		String SelectItemFromIndex = "//android.widget.ImageView[contains(@resource-id,'rs_results_image')]";
+		driver.findElement(By.xpath(SelectItemFromIndex)).click();
+		Thread.sleep(3000);
+		
+		
+	}
+	
+	public void scrollToTillTextPresent(String text) {
+		String uiSelector = "new UiSelector().textMatches(\"" + text + "\")";
+
+		String command = "new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView("
+                + uiSelector + ");";
+
+		driver.findElementByCssSelector(command);
+		
+	}
+	
 }

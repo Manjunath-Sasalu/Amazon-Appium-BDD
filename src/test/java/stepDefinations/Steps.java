@@ -1,7 +1,11 @@
 package stepDefinations;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
 
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -9,34 +13,28 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.*;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
-import pageObjects.LoginPage;
+import pageObjects.LoginAndSearchPage;
 
 import org.openqa.selenium.WebElement;
 
 public class Steps extends BaseClass{
 	
-	//Login steps
-	
-	
-	
-//	@Given("User Launch Amazon Mobile App")
-//	public void user_Launch_Amazon_Mobile_App() throws MalformedURLException {
-//		//setDesiredCapabilities();
-//	}
-	
+		
 	@Before
-	public void setDesiredCapabilities() throws MalformedURLException {
+	public void setDesiredCapabilities() throws IOException {
+		
+		// Load config.properties file
+		configPropObj = new Properties();
+		FileInputStream configfile = new FileInputStream(System.getProperty("user.dir") + "\\Configuration\\config.properties");
+		configPropObj.load(configfile);
+		
         DesiredCapabilities dc= new DesiredCapabilities();
-        //dc.setCapability(MobileCapabilityType.AUTOMATION_NAME, "Appium");
-        dc.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android"); 
-        //dc.setCapability(MobileCapabilityType.PLATFORM_VERSION, 11);//Version is number here
-        dc.setCapability(MobileCapabilityType.DEVICE_NAME, "emulator-5554");
+        dc.setCapability(MobileCapabilityType.PLATFORM_NAME, configPropObj.getProperty("PLATFORM_NAME")); 
+        dc.setCapability(MobileCapabilityType.DEVICE_NAME, configPropObj.getProperty("PLATFORM_VERSION"));
         dc.setCapability(MobileCapabilityType.APP, apkPath);
-        //dc.setCapability(MobileCapabilityType., value);
-        URL url =new URL("http://127.0.0.1:4723/wd/hub");
-        System.out.println("Done");
+        URL url =new URL(configPropObj.getProperty("URL"));
         driver=new AppiumDriver<WebElement>(url, dc);
-        //driver=new AppiumDriver<WebElement>(dc);
+        
 	}
 	
 	//Gherkin implemeted methods
@@ -45,7 +43,7 @@ public class Steps extends BaseClass{
 	public void user_Launch_Amazon_Mobile_App_and_select_on_Already_a_customer_Sign_in_Option(String string) throws InterruptedException {
 		
 		//System.out.println("+++++++++++++++"+apkPath);
-		lp=new LoginPage(driver);
+		lp=new LoginAndSearchPage(driver);
 	    lp.clickOnAlreadyCustomer();
 	}
 
@@ -73,17 +71,20 @@ public class Steps extends BaseClass{
 	@Given("User Entered the search as {string}")
 	public void user_Entered_the_search_as(String searchItem) throws InterruptedException {
 	   lp.searchItemFromAmazon(searchItem);
+	   
 	}
 
 	@Then("User should select the Items Randomly")
-	public void user_should_select_the_Items_Randomly() {
+	public void user_should_select_the_Items_Randomly() throws InterruptedException {
+		lp.randomlySelectSearchItem();
 	    
 	}
 
-	@Then("User should able to buy the selected Item")
-	public void user_should_able_to_buy_the_selected_Item() {
-	   
+	@Then("User should able to buy the selected Item {string}")
+	public void user_should_able_to_buy_the_selected_Item(String SearchIndex) throws InterruptedException {
+		lp.selectItemFromSearch(SearchIndex);
 	}
+
 
 	
 

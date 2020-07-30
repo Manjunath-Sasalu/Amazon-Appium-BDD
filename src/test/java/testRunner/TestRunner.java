@@ -13,7 +13,8 @@ import cucumber.api.junit.Cucumber;
 		dryRun=false,
 		monochrome=true,
 		//tags= {"@regression"},
-		plugin= {"pretty","html:test-output"}
+		//plugin= {"pretty","html:test-output"}
+		plugin = {"pretty","html:test-output", "json:json_output/cucumber.json", "junit:junit-xml/cucumber.xml"}
 		)
 public class TestRunner {
 

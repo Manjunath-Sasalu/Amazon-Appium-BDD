@@ -19,6 +19,12 @@ public class Utils {
 		txtElement.sendKeys(value);
 	}
 	
+	/**
+	 * @author Manjunath
+	 * @param driver
+	 * @param element
+	 * @param value
+	 */
 	
 	public static void clickOnElement(AppiumDriver<WebElement> driver, String element) {
 		WebElement clkElement = returnWebElemt(driver, element);
@@ -27,7 +33,12 @@ public class Utils {
 	}
 
 	
-	
+	/**
+	 * @author Manjunath
+	 * @param driver
+	 * @param element
+	 * @param value
+	 */
 	public static WebElement returnWebElemt(AppiumDriver<WebElement> driver, String element) {
 		// TODO Auto-generated method stub
 		if(element.startsWith("/"))

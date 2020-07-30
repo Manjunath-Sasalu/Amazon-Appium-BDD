@@ -10,7 +10,7 @@ import cucumber.api.junit.Cucumber;
 @CucumberOptions(
 		features=".//Features//",
 		glue="stepDefinations",
-		dryRun=false,
+		dryRun=true,
 		monochrome=true,
 		//tags= {"@regression"},
 		//plugin= {"pretty","html:test-output"}
